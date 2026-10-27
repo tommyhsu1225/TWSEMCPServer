@@ -1,0 +1,27 @@
+name: Sync Fork with Upstream
+
+on:
+  schedule:
+    # 每天 UTC 00:00（台灣時間 08:00）自動執行
+    - cron: '0 0 * * *'
+  workflow_dispatch: # 支援在 GitHub Actions 頁面手動點擊執行
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    name: Sync with upstream
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout target repo
+        uses: actions/checkout@v4
+
+      - name: Sync with Upstream
+        uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.1
+        with:
+          upstream_repository: twjackysu/TWSEMCPServer
+          upstream_branch: main
+          target_branch: main
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          test_mode: false
